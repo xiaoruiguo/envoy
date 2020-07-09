@@ -38,11 +38,12 @@ stages:
               pathtoPublish: "$(Build.StagingDirectory)/fix_format.diff"
               artifactName: format
             condition: failed()
+
   - stage: release
+    dependsOn: ["format"]
     jobs:
       - job: release
         displayName: "Linux-x64 release"
-        dependsOn: ["format"]
         # For master builds, continue even if format fails
         condition: and(not(canceled()), or(succeeded(), ne(variables['Build.Reason'], 'PullRequest')))
         timeoutInMinutes: 360
@@ -55,7 +56,6 @@ stages:
 
       - job: release_arm64
         displayName: "Linux-arm64 release.server_only"
-        dependsOn: ["format"]
         condition: ne(variables['Build.Reason'], 'PullRequest')
         pool: "arm-large"
         steps:
@@ -96,7 +96,6 @@ stages:
 
       - job: coverage
         displayName: "Linux-x64 coverage"
-        dependsOn: ["format"]
         timeoutInMinutes: 360
         pool: "x64-large"
         steps:
