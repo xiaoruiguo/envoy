@@ -57,7 +57,7 @@ steps:
         BAZEL_REMOTE_INSTANCE: projects/envoy-ci/instances/default_instance
         GCP_SERVICE_ACCOUNT_KEY: $(GcpServiceAccountKey)
       ${{ if eq(parameters.rbe, false) }}:
-        BAZEL_BUILD_EXTRA_OPTIONS: "--curses=no --experimental_repository_cache_hardlinks ${{ parameters.bazelBuildExtraOptions }}"
+        BAZEL_BUILD_EXTRA_OPTIONS: "--curses=no --remote_cache=grpc://127.0.0.1:9092 --experimental_repository_cache_hardlinks ${{ parameters.bazelBuildExtraOptions }}"
 
     displayName: "Run CI script"
 
